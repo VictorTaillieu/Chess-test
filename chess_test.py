@@ -7,43 +7,52 @@ from utils import load_data
 # Load questions data
 data = load_data()
 
+# Initialize variables
+close = False
+choice = ""
+position = 0
+score = []
+
 # Display home window
 home = main_layout()
 
-# Run the event loop
+# Run home event loop
 while True:
     event, values = home.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
+        close = True
         break
     elif event == "-SHORT-":
+        choice = "short"
         break
     elif event == "-LONG-":
+        choice = "long"
         break
     elif event == "-LOAD-":
         break
 
 home.close()
 
-quiz = quiz_layout()
+if not close:
+    # Display quiz window
+    quiz = quiz_layout()
 
-position = 0
-score = []
-next_position(quiz, data, position)
+    next_position(quiz, data, position)
 
-# Run the event loop
-while True:
-    event, values = quiz.read()
-    if event == "Exit" or event == sg.WIN_CLOSED:
-        break
-    elif event == "-VALIDER-":
-        s1, s2 = get_position_score(data[position]["questions"], values)
-        score.extend([s1, s2])
+    # Run quiz event loop
+    while True:
+        event, values = quiz.read()
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+        elif event == "-VALIDER-":
+            s1, s2 = get_position_score(data[position]["questions"], values)
+            score.extend([s1, s2])
 
-        position += 1
+            position += 1
 
-        if position == len(data):
-            sg.popup(f"Votre score est de {score} points.")
-        else:
-            next_position(quiz, data, position)
+            if position == len(data):
+                sg.popup(f"Votre score est de {score} points.")
+            else:
+                next_position(quiz, data, position)
 
-quiz.close()
+    quiz.close()
