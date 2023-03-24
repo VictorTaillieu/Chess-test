@@ -1,3 +1,5 @@
+from random import randint
+
 import PySimpleGUI as sg
 
 from actions import main_layout, next_position, quiz_layout
@@ -24,6 +26,8 @@ while True:
         break
     elif event == "-SHORT-":
         choice = "short"
+        short_index = randint(0, 9)
+        data = data[short_index * 10:(short_index + 1) * 10]
         break
     elif event == "-LONG-":
         choice = "long"
