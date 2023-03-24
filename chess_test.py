@@ -1,4 +1,6 @@
+import pickle
 from random import randint
+from os.path import exists
 
 import PySimpleGUI as sg
 
@@ -33,7 +35,13 @@ while True:
         choice = "long"
         break
     elif event == "-LOAD-":
-        break
+        choice = "long"
+        if exists("save.pkl"):
+            score = pickle.load(open("save.pkl", "rb"))
+            position = len(score) // 2
+            break
+        else:
+            sg.popup("Aucune sauvegarde n'a été trouvée")
 
 home.close()
 
@@ -53,6 +61,9 @@ if not close:
             score.extend([s1, s2])
 
             position += 1
+
+            if choice == "long":
+                pickle.dump(score, open("save.pkl", "wb"))
 
             if position == len(data):
                 sg.popup(f"Votre score est de {score} points.")
