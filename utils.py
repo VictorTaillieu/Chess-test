@@ -17,3 +17,7 @@ def fen_to_png(fen):
     board_svg = chess.svg.board(board, orientation=board.turn)
 
     return svg2png(bytestring=board_svg)
+
+
+def interpolate(value, min, max, new_min, new_max):
+    return new_min + (new_max - new_min) * (value - min) / (max - min)
